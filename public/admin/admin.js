@@ -470,6 +470,7 @@
       { k: 'address', l: 'العنوان', t: 'text' }, { k: 'mapUrl', l: 'رابط خرائط جوجل', t: 'url' },
       { k: 'facebook', l: 'فيسبوك', t: 'url', half: true }, { k: 'instagram', l: 'إنستغرام', t: 'url', half: true },
       { k: 'tiktok', l: 'تيك توك', t: 'url', half: true }, { k: 'email', l: 'الإيميل', t: 'text', half: true }] },
+    { title: 'الأرقام في الواجهة', pairs: { k: 'stats', a: ['value', 'الرقم', '44K'], b: ['label', 'الوصف', 'متابع على فيسبوك'] } },
     { title: 'مواعيد العمل', pairs: { k: 'hours', a: ['label', 'العنوان', 'مواعيد العمل'], b: ['value', 'الوقت', 'مفتوح دائمًا'] } },
     { title: 'الطلبات', fields: [
       { k: 'currency', l: 'العملة', t: 'text', half: true },

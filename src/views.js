@@ -38,7 +38,7 @@ const priceHtml = (s, x) => {
   return `<span class="price"><b>${Number(x.price).toLocaleString('en-US')}</b> ${e(s.currency)}</span>`;
 };
 
-const phImg = (label) => `<span class="ph-img" aria-hidden="true">${icon('image')}<small>${e(label)}</small></span>`;
+const phImg = (label) => `<span class="ph-img" aria-hidden="true">${markSvg({ variant: 'mono', color: 'currentColor', gap: 'transparent', cls: 'ph-mark' })}<small>${e(label)}</small></span>`;
 
 // ——— المكوّنات ———
 function brand(s) {
@@ -137,7 +137,7 @@ function layout(db, { title, path = '/', body }) {
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${e(fullTitle)}</title>
 <meta name="description" content="${e(s.seoDescription)}">
-<meta name="theme-color" content="#FBF8F2">
+<meta name="theme-color" content="#15100B">
 ${SITE ? `<link rel="canonical" href="${e(SITE + path)}"><meta property="og:url" content="${e(SITE + path)}">` : ''}
 <meta property="og:type" content="website">
 <meta property="og:locale" content="ar_LY">
@@ -160,7 +160,7 @@ ${SITE ? `<link rel="canonical" href="${e(SITE + path)}"><meta property="og:url"
     <nav class="nav" aria-label="القائمة الرئيسية">${NAV.map(([h, l]) => `<a href="${h}"${h === path ? ' aria-current="page"' : ''}>${l}</a>`).join('')}</nav>
     <div class="top-actions">
       <button type="button" class="cart-btn" data-cart-open aria-label="طلبيتي">${icon('bag')}<span class="count" data-cart-count hidden>0</span></button>
-      <a class="btn btn-dark btn-sm hide-sm" href="${waHello}" data-lead='{"type":"inquiry","ref":"header"}' target="_blank" rel="noopener">${icon('whatsapp')} واتساب</a>
+      <a class="btn btn-gold btn-sm hide-sm" href="${waHello}" data-lead='{"type":"inquiry","ref":"header"}' target="_blank" rel="noopener">${icon('whatsapp')} واتساب</a>
       <button type="button" class="menu-btn" data-menu aria-label="القائمة" aria-expanded="false">${icon('menu')}</button>
     </div>
   </div>
@@ -243,27 +243,31 @@ function home(db) {
 
   const body = `
 <section class="hero">
+  <div class="hero-bg">${s.heroImage ? `<img src="${e(s.heroImage)}" alt="" fetchpriority="high">` : ''}</div>
+  <div class="slants" aria-hidden="true"><i></i><i></i><i></i></div>
   <div class="wrap hero-in">
     <div class="hero-text">
-      ${markSvg({ cls: 'hero-mark', title: s.shortName })}
-      <p class="eyebrow">${icon('pin')} طرابلس · طريق الشوك</p>
+      <p class="eyebrow"><span class="rule"></span>مطبخ موكا · طرابلس</p>
       <h1>${e(s.nameAr)}</h1>
       <p class="hero-lead">${e(s.tagline)}</p>
       ${s.intro ? `<p class="hero-intro">${e(s.intro)}</p>` : ''}
       <div class="actions">
-        <a class="btn btn-wa btn-lg" href="${wa(s, 'السلام عليكم، نبي ندير طلبية')}" data-lead='{"type":"inquiry","ref":"hero"}' target="_blank" rel="noopener">${icon('whatsapp')} اطلب على واتساب</a>
-        <a class="btn btn-outline btn-lg" href="/menu">المنيو</a>
+        <a class="btn btn-gold btn-lg" href="${wa(s, 'السلام عليكم، نبي ندير طلبية')}" data-lead='{"type":"inquiry","ref":"hero"}' target="_blank" rel="noopener">${icon('whatsapp')} اطلب على واتساب</a>
+        <a class="btn btn-ghost btn-lg" href="/menu">تصفّح المنيو ${icon('arrow')}</a>
       </div>
-      <ul class="facts">
-        ${(s.hours || []).slice(0, 1).map(h => `<li>${icon('clock')}<span>${e(h.value)}</span></li>`).join('')}
-        ${phone ? `<li>${icon('phone')}<a href="tel:${tel(phone)}" dir="ltr">${e(phone)}</a></li>` : ''}
-      </ul>
+      ${(s.stats || []).length ? `<dl class="stats">${s.stats.map(x => `<div><dt dir="ltr">${e(x.value)}</dt><dd>${e(x.label)}</dd></div>`).join('')}</dl>` : ''}
     </div>
-    <div class="hero-media">
-      ${s.heroImage ? `<img src="${e(s.heroImage)}" alt="من أطباق ${e(s.shortName)}" fetchpriority="high">` : phImg('صورة الغلاف')}
-    </div>
+    ${tastes[0] ? (() => { const t = tastes[0], dp = dateParts(t.date); return `
+    <a class="next${t.demo ? ' is-demo' : ''}" href="#tasting">
+      <span class="next-label">${icon('sparkle')} أقرب موعد تذوّق</span>
+      <span class="next-date">${dp ? `<b>${dp.d}</b> ${dp.month}` : '<b>--</b> التاريخ'}</span>
+      <span class="next-day">${dp ? `${dp.day}${t.timeFrom ? ' · ' + time12(t.timeFrom) : ''}` : 'اليوم · الساعة'}</span>
+      <span class="next-go">احجز مقعدك ${icon('arrow')}</span>
+    </a>`; })() : ''}
   </div>
 </section>
+
+<div class="ticker" aria-hidden="true"><div class="ticker-track">${(() => { const t = [s.nameAr, s.tagline, 'طرابلس · طريق الشوك', ...(s.hours || []).map(h => h.value)].filter(Boolean); return [...t, ...t, ...t, ...t].map(x => `<span>${e(x)}</span>`).join(''); })()}</div></div>
 
 ${show.length ? `<section class="sec" id="menu">
   <div class="wrap">
@@ -293,8 +297,19 @@ ${gal.length ? `<section class="sec sec-alt" id="gallery">
   </div>
 </section>` : ''}
 
+${band(s)}
 ${contactSection(s)}`;
   return layout(db, { path: '/', body });
+}
+
+function band(s) {
+  return `
+<section class="band">
+  <div class="wrap band-in">
+    <div><h2>${e(s.tagline)}</h2><p>${e(s.nameAr)}</p></div>
+    <a class="btn btn-dark btn-lg" href="${wa(s, 'السلام عليكم')}" data-lead='{"type":"inquiry","ref":"band"}' target="_blank" rel="noopener">${icon('whatsapp')} تواصل على واتساب</a>
+  </div>
+</section>`;
 }
 
 function contactSection(s) {
@@ -310,7 +325,7 @@ function contactSection(s) {
       </dl>
     </div>
     <div class="contact-actions">
-      <a class="btn btn-wa btn-lg btn-block" href="https://wa.me/${e(s.whatsapp)}" target="_blank" rel="noopener">${icon('whatsapp')} راسلنا على واتساب</a>
+      <a class="btn btn-gold btn-lg btn-block" href="https://wa.me/${e(s.whatsapp)}" target="_blank" rel="noopener">${icon('whatsapp')} راسلنا على واتساب</a>
       ${s.mapUrl ? `<a class="btn btn-outline btn-lg btn-block" href="${safeUrl(s.mapUrl)}" target="_blank" rel="noopener">${icon('pin')} افتح الموقع على الخريطة</a>` : ''}
       ${s.facebook ? `<a class="btn btn-ghost btn-block" href="${safeUrl(s.facebook)}" target="_blank" rel="noopener">${icon('facebook')} صفحتنا على فيسبوك</a>` : ''}
     </div>

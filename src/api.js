@@ -53,6 +53,7 @@ function cleanSettings(b) {
   if ('phones' in b) s.phones = list(b.phones, 6);
   const pairs = (v, a, bk, max) => (Array.isArray(v) ? v : []).map(x => ({ [a]: str(x?.[a], 80), [bk]: str(x?.[bk], max) })).filter(x => x[a] || x[bk]).slice(0, 8);
   if ('hours' in b) s.hours = pairs(b.hours, 'label', 'value', 120);
+  if ('stats' in b) s.stats = pairs(b.stats, 'value', 'label', 60).filter(x => x.value);
   return s;
 }
 

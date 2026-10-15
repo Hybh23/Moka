@@ -33,6 +33,8 @@ module.exports = function seed() {
       instagram: '',
       tiktok: '',
       hours: [{ label: 'مواعيد العمل', value: 'مفتوح دائمًا' }],
+      // من صفحة الفيسبوك
+      stats: [{ value: '44K', label: 'متابع على فيسبوك' }, { value: '1.1K', label: 'منشور من أعمالنا' }],
       orderNotes: '',
       seoTitle: 'شركة موكا للخدمات التموينية | طرابلس',
       seoDescription: 'شركة موكا للخدمات التموينية في طرابلس، طريق الشوك. نقوم بتلبية جميع الطلبيات.',
