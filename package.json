@@ -1,0 +1,32 @@
+{
+  "name": "moka-kitchen",
+  "version": "1.0.0",
+  "description": "موقع وهوية شركة موكا للخدمات التموينية + لوحة إدارة",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "brand": "node scripts/build-brand.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hybh23/Moka.git"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/Hybh23/Moka/issues"
+  },
+  "homepage": "https://github.com/Hybh23/Moka#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "compression": "^1.8.2",
+    "express": "^5.3.0",
+    "multer": "^2.4.0",
+    "sharp": "^0.34.5"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "private": true
+}
