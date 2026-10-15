@@ -463,8 +463,12 @@
     { title: 'الشركة', fields: [
       { k: 'nameAr', l: 'اسم الشركة', t: 'text' }, { k: 'shortName', l: 'الاسم المختصر', t: 'text', half: true }, { k: 'nameEn', l: 'الاسم بالإنجليزي', t: 'text', half: true },
       { k: 'tagline', l: 'الجملة اللي تحت الاسم', t: 'text' },
-      { k: 'intro', l: 'نبذة قصيرة (اختياري)', t: 'textarea', rows: 3 },
-      { k: 'heroImage', l: 'الصورة الرئيسية', t: 'image' }] },
+      { k: 'intro', l: 'نبذة قصيرة (اختياري)', t: 'textarea', rows: 3 }] },
+    { title: 'الواجهة الرئيسية', fields: [
+      { k: 'heroImage', l: 'الصورة الرئيسية', t: 'image' },
+      { k: 'heroKicker', l: 'السطر الصغير فوق العنوان', t: 'text' },
+      { k: 'heroTitle', l: 'العنوان الكبير (Enter = سطر جديد)', t: 'textarea', rows: 2 },
+      { k: 'heroSubtitle', l: 'النص تحت العنوان', t: 'textarea', rows: 3 }] },
     { title: 'التواصل', fields: [
       { k: 'whatsapp', l: 'رقم واتساب اللي توصله الطلبات', t: 'text', ph: '0945313001', half: true }, { k: 'phones', l: 'أرقام الهاتف (كل رقم في سطر)', t: 'list', half: true },
       { k: 'address', l: 'العنوان', t: 'text' }, { k: 'mapUrl', l: 'رابط خرائط جوجل', t: 'url' },

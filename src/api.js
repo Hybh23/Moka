@@ -44,7 +44,7 @@ const SCHEMAS = {
 
 function cleanSettings(b) {
   const s = {};
-  const textKeys = { nameAr: 120, shortName: 40, nameEn: 80, tagline: 200, intro: 1200,
+  const textKeys = { nameAr: 120, shortName: 40, nameEn: 80, tagline: 200, intro: 1200, heroKicker: 80, heroTitle: 160, heroSubtitle: 500,
     currency: 10, email: 120, address: 300, orderNotes: 500, seoTitle: 160, seoDescription: 320 };
   for (const [k, max] of Object.entries(textKeys)) if (k in b) s[k] = str(b[k], max);
   if ('heroImage' in b) s.heroImage = img(b.heroImage);

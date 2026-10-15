@@ -114,7 +114,8 @@ const galleryTile = (g) => g.image
   ? `<figure><button type="button" data-lightbox="${e(g.image)}" data-caption="${e(g.caption)}" aria-label="تكبير الصورة"><img src="${e(g.image)}" alt="${e(g.caption)}" loading="lazy"></button></figure>`
   : `<figure class="is-demo">${phImg('صورة')}</figure>`;
 
-const head = (title, link) => `<div class="sec-head"><h2>${e(title)}</h2>${link || ''}</div>`;
+const head = (kicker, title, sub = '', link = '') => `<div class="sec-head"><div><span class="kicker">${e(kicker)}</span><h2>${e(title)}</h2>${sub ? `<p>${e(sub)}</p>` : ''}</div>${link}</div>`;
+const nl = (v) => e(v).replace(/\n/g, '<br>');
 
 // ——— الهيكل ———
 const NAV = [['/', 'الرئيسية'], ['/menu', 'المنيو'], ['/#packages', 'الباقات'], ['/#tasting', 'التذوّق'], ['/#gallery', 'أعمالنا'], ['/#contact', 'تواصل']];
@@ -137,7 +138,7 @@ function layout(db, { title, path = '/', body }) {
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${e(fullTitle)}</title>
 <meta name="description" content="${e(s.seoDescription)}">
-<meta name="theme-color" content="#15100B">
+<meta name="theme-color" content="#FBF6EC">
 ${SITE ? `<link rel="canonical" href="${e(SITE + path)}"><meta property="og:url" content="${e(SITE + path)}">` : ''}
 <meta property="og:type" content="website">
 <meta property="og:locale" content="ar_LY">
@@ -244,12 +245,11 @@ function home(db) {
   const body = `
 <section class="hero">
   <div class="hero-bg">${s.heroImage ? `<img src="${e(s.heroImage)}" alt="" fetchpriority="high">` : ''}</div>
-  <div class="slants" aria-hidden="true"><i></i><i></i><i></i></div>
   <div class="wrap hero-in">
     <div class="hero-text">
-      <p class="eyebrow"><span class="rule"></span>مطبخ موكا · طرابلس</p>
-      <h1>${e(s.nameAr)}</h1>
-      <p class="hero-lead">${e(s.tagline)}</p>
+      <p class="eyebrow"><span class="rule"></span>${e(s.heroKicker || 'مطبخ موكا · طرابلس')}</p>
+      <h1>${s.heroTitle ? nl(s.heroTitle) : e(s.nameAr)}</h1>
+      <p class="hero-lead">${e(s.heroSubtitle || s.tagline)}</p>
       ${s.intro ? `<p class="hero-intro">${e(s.intro)}</p>` : ''}
       <div class="actions">
         <a class="btn btn-gold btn-lg" href="${wa(s, 'السلام عليكم، نبي ندير طلبية')}" data-lead='{"type":"inquiry","ref":"hero"}' target="_blank" rel="noopener">${icon('whatsapp')} اطلب على واتساب</a>
@@ -267,32 +267,42 @@ function home(db) {
   </div>
 </section>
 
-<div class="ticker" aria-hidden="true"><div class="ticker-track">${(() => { const t = [s.nameAr, s.tagline, 'طرابلس · طريق الشوك', ...(s.hours || []).map(h => h.value)].filter(Boolean); return [...t, ...t, ...t, ...t].map(x => `<span>${e(x)}</span>`).join(''); })()}</div></div>
 
 ${show.length ? `<section class="sec" id="menu">
   <div class="wrap">
-    ${head('من المنيو', `<a class="link" href="/menu">المنيو كامل ${icon('arrow')}</a>`)}
+    ${head('الأكثر طلبًا', 'أصناف تخلّي الضيوف يسألوا: منين جبتوها؟', 'اختار وزيد للطلبية، وفي الآخر نبعثوها مع بعض على واتساب.', `<a class="link" href="/menu">المنيو كامل ${icon('arrow')}</a>`)}
     <div class="grid grid-3">${show.map(i => dishCard(s, i)).join('')}</div>
   </div>
 </section>` : ''}
 
 ${pkgs.length ? `<section class="sec sec-alt" id="packages">
   <div class="wrap">
-    ${head('الباقات')}
+    ${head('الباقات', 'باقات جاهزة لكل حجم مناسبة', 'تقدر تعدّل على أي باقة حسب ذوقك وعدد ضيوفك.')}
     <div class="grid grid-3">${pkgs.map(p => packageCard(s, p)).join('')}</div>
   </div>
 </section>` : ''}
 
 ${tastes.length ? `<section class="sec" id="tasting">
   <div class="wrap">
-    ${head('مواعيد التذوّق')}
+    ${head('مواعيد التذوّق', 'ذوق قبل ما تقرر', 'نفتحوا مطبخنا في مواعيد محددة تذوقوا فيها أصنافنا. المقاعد محدودة.')}
     <div class="stack">${tastes.slice(0, 3).map(t => tastingCard(s, t)).join('')}</div>
   </div>
 </section>` : ''}
 
-${gal.length ? `<section class="sec sec-alt" id="gallery">
+<section class="sec sec-alt steps">
   <div class="wrap">
-    ${head('من أعمالنا')}
+    ${head('كيف تطلب', 'ثلاث خطوات وسفرتك جاهزة')}
+    <ol class="step-grid">
+      <li><span class="step-n">1</span><h3>اختار أصنافك</h3><p>تصفّح المنيو أو الباقات وزيد اللي يعجبك لطلبيتك.</p></li>
+      <li><span class="step-n">2</span><h3>ابعثها على واتساب</h3><p>رسالة جاهزة فيها الأصناف والكميات وتاريخ المناسبة.</p></li>
+      <li><span class="step-n">3</span><h3>نأكدوا ونجهّزوا</h3><p>نتواصلوا معاك، نأكدوا التفاصيل، ونجهّزوا في الموعد.</p></li>
+    </ol>
+  </div>
+</section>
+
+${gal.length ? `<section class="sec" id="gallery">
+  <div class="wrap">
+    ${head('من أعمالنا', 'شغل يتصوّر قبل ما يتاكل')}
     <div class="gallery">${gal.map(galleryTile).join('')}</div>
   </div>
 </section>` : ''}
@@ -306,8 +316,8 @@ function band(s) {
   return `
 <section class="band">
   <div class="wrap band-in">
-    <div><h2>${e(s.tagline)}</h2><p>${e(s.nameAr)}</p></div>
-    <a class="btn btn-dark btn-lg" href="${wa(s, 'السلام عليكم')}" data-lead='{"type":"inquiry","ref":"band"}' target="_blank" rel="noopener">${icon('whatsapp')} تواصل على واتساب</a>
+    <div><h2>عندك مناسبة قريبة؟</h2><p>ابعثلنا التاريخ وعدد الضيوف، ونردّوا عليك بأقرب وقت بمنيو وسعر يناسبك.</p></div>
+    <a class="btn btn-gold btn-lg" href="${wa(s, 'السلام عليكم، عندي مناسبة ونبي نعرف التفاصيل')}" data-lead='{"type":"inquiry","ref":"band"}' target="_blank" rel="noopener">${icon('whatsapp')} كلّمنا على واتساب</a>
   </div>
 </section>`;
 }
